@@ -66,7 +66,7 @@
     
     switch (segmentedcontrol1.selectedSegmentIndex) { //This is the code referring to the bar on top, with base options (binary, octal, decimal, hexadec)
             
-        case 0: //If user is converting from binary....
+        case 0: //If user is converting FROM BINARY....
         {
             NSString *numero = textField.text; //App receives this binary input as a string.
             int length = (int)[numero length]; //Taking the length of this string.
@@ -186,9 +186,9 @@
             
             break;
         }
-        case 2: //If user wants to convert FROM BINARY
+        case 2: //If user wants to convert FROM DECIMAL
             
-            sonuc = [textField.text floatValue]; //App scans the number
+            sonuc = [textField.text floatValue]; //For Decimal inputs, the app recognizes the input as a number (not a string).
             
             float floater;
             number = (int)sonuc; //the integer fragment of the number
@@ -246,7 +246,7 @@
                             output[a+1-tugrul] = '\0';
                         }
                         
-                        label.text = [NSString stringWithFormat:@"%s", output]; //Victory! Program now writes the result. The remaining has the same logic.
+                        label.text = [NSString stringWithFormat:@"%s", output]; //Victory! App now writes the result. The remaining of this source code works with almost the same logic.
                     } else {
                         label.text = [NSString stringWithFormat:@"%d", 0];
                     }
