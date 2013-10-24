@@ -19,7 +19,7 @@
 @end
 
 
-@interface NSString (NSStringWithOctal)
+@interface NSString (NSStringWithOctal)   //Putting the octal input as a string into interface.
 -(int)octalIntValue;
 @end
 
@@ -33,7 +33,8 @@
     for(int i=(int)[self length]-1; i>=0; i--)
     {
         c = [self characterAtIndex:i];
-        if((c<'0')||(c>'7')) {UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"INPUT ERROR"
+        if((c<'0')||(c>'7')) //If user doesn't use an input inside the appropriate interval for octal base, app pops out an error window.
+        {UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"INPUT ERROR"
                                                                                       message:@"Please use appropriate digits!"
                                                                                      delegate:nil
                                                                             cancelButtonTitle:@"GOT IT!"
@@ -48,7 +49,7 @@
 @end
 
 
-@implementation MNBCMainViewController
+@implementation MNBCMainViewController //Everything begins <<<HERE>>>
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -67,10 +68,10 @@
             
         case 0: //If user is converting from binary....
         {
-            NSString *numero = textField.text; //Program receives this binary input as a string.
-            int length = (int)[numero length]; //Taking the length of such string.
+            NSString *numero = textField.text; //App receives this binary input as a string.
+            int length = (int)[numero length]; //Taking the length of this string.
             
-            for (love=0; love<length; love++) { //As you know, this app can work with non-integer inputs. And this is a geniune counter to determine the linear location of period. Why? To prevent computational errors.
+            for (love=0; love<length; love++) { //As you know, this app can work with non-integer inputs, and this is a geniune counter to determine the linear location of period. Why? To prevent computational errors.
                 
                 if ([numero characterAtIndex:love]!='1' && [numero characterAtIndex:love]!='0' && [numero characterAtIndex:love]!='.') { //OK here, we say if the input has a character other than 1, 0 or a "." (period), the program pops out an error window.
                     
@@ -124,7 +125,7 @@
                     }
                 }
                 
-            } else if (batuhanic==1) { //If user starts with a period... Programs pops out an error window.
+            } else if (batuhanic==1) { //If user starts with a period... App pops out an error window.
                 
                 batuhanic = 0;
                 
@@ -137,7 +138,7 @@
                 sonuc = 0;
                 numero = @"0";
                 
-            } else { //If user uses an integer, then yay! Everything is much simple...
+            } else { //If user uses an integer, then yay! Everything is much simpler...
                 
                 for (love=0; love<length; love++) {
                     if ([numero characterAtIndex:love]=='1') {
@@ -147,7 +148,7 @@
                     }
                 }
             }
-            // So far we have scanned the binary number and found its value. Now, let's convert it!
+            // So far we have scanned the binary string and found its value. Now, let's convert it!
 
             switch (segmentedcontrol2.selectedSegmentIndex) { //This is the code referring to the bar at the bottom with base options (binary, octal, decimal, hexadec).
                     
@@ -187,7 +188,7 @@
         }
         case 2: //If user wants to convert FROM BINARY
             
-            sonuc = [textField.text floatValue]; //Program scans the number
+            sonuc = [textField.text floatValue]; //App scans the number
             
             float floater;
             number = (int)sonuc; //the integer fragment of the number
@@ -204,12 +205,12 @@
                     if (sonuc!=0) {
                         static int a;
                         
-                        a = log2(number); //We are taking the logarythm of the number on base 2, in order to find the maximum number of digits.
+                        a = log2(number); //App takes the logarythm of the number on base 2, in order to find the maximum number of digits.
                         
                         
                         int i, y, x;
                         
-                        char output[1024]; // The output string.
+                        char output[1024]; // The output string and its size.
 
                         
                         
@@ -223,7 +224,7 @@
                             } else {
                                 output[a-i] = '1'; // Otherwise, we assign 1 to that respective digit. And we go on until the remainder is 0. How do we find the remainder? BELOW!
                                 y = pow(2, i);
-                                number %= y; //find the remainder!
+                                number %= y; //Find the remainder!
                             }
                         }
                         
@@ -409,7 +410,7 @@
             break;
     }
     
-    number=0; love=0; b=0; batuhanic=0; sonuc=0; //And now program clears all the variables.
+    number=0; love=0; b=0; batuhanic=0; sonuc=0; //Finally, app clears all the variables.
 }
 
 
