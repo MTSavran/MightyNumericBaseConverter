@@ -52,66 +52,63 @@
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
+    [textField resignFirstResponder]; //To get rid of the keyboard when user taps "return"
     return 0;
 }
 
 
-- (IBAction)convert:(id)sender{
+- (IBAction)convert:(id)sender{ //This is the "Convert!" button.
     
-    int number, love, b, batuhanic=0;
+    int number, love, b, batuhanic=0; //defining variables.
     static float sonuc=0;
     int minus = 0-1;
     
-    switch (segmentedcontrol1.selectedSegmentIndex) {
+    switch (segmentedcontrol1.selectedSegmentIndex) { //This is the code referring to the bar on top, with base options (binary, octal, decimal, hexadec)
             
-        case 0:
+        case 0: //If user is converting from binary....
         {
-            NSString *numero = textField.text;
-            int length = (int)[numero length];
+            NSString *numero = textField.text; //Program receives this binary input as a string.
+            int length = (int)[numero length]; //Taking the length of such string.
             
-            for (love=0; love<length; love++) {
+            for (love=0; love<length; love++) { //As you know, this app can work with non-integer inputs. And this is a geniune counter to determine the linear location of period. Why? To prevent computational errors.
                 
-                if ([numero characterAtIndex:love]!='1' && [numero characterAtIndex:love]!='0' && [numero characterAtIndex:love]!='.') {
+                if ([numero characterAtIndex:love]!='1' && [numero characterAtIndex:love]!='0' && [numero characterAtIndex:love]!='.') { //OK here, we say if the input has a character other than 1, 0 or a "." (period), the program pops out an error window.
                     
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"INPUT ERROR"
-                                                                    message:@"Please use appropriate digits!"
+                                                                   message:@"Please use appropriate digits!"
                                                                    delegate:nil
                                                           cancelButtonTitle:@"GOT IT!"
                                                           otherButtonTitles:nil];
-                    [alert show];
-                    
-                    //sonuc = 0;
-                    //numero = @"0";
-                    
-                    break;
+                                                                    [alert show];
+                                                                           break;
                     
                 }
             }
             
             for (love=0; love<length; love++) {
                 if ([numero characterAtIndex:love]=='.') {
-                    batuhanic = love + 1;
+                    batuhanic = love + 1;//Assigning the linear coordinate of period.
                     break;
                 }
             }
             
-            if (batuhanic > 1) {
+            if (batuhanic > 1) { //if everything is going well...
                 
                 for (love=0; love<(batuhanic-1); love++) {
                     if ([numero characterAtIndex:love] == '1') {
-                        sonuc = sonuc + pow(2.0, (double)(batuhanic-2-love));
+                        sonuc = sonuc + pow(2.0, (double)(batuhanic-2-love)); // We are scanning the array elements until the coordinate of the period. If we find "1", we take the relevant powers of 2 and save it to the variable "sonuc", which means results in Turkish.
                     } else {
                         continue;
                     }
                 }
                 
                 for (love=batuhanic; love<length; love++) {
-                    if ([numero characterAtIndex:love]=='1') {
+
+                    if ([numero characterAtIndex:love]=='1') { //Now, we are processing the digits after the period with the same method.
                         sonuc = sonuc + pow(2.0, (double)(batuhanic-1-love));
                         
                     } else if ([numero characterAtIndex:love]=='.') {
-                        batuhanic = 0;
+                        batuhanic = 0; //If the user puts two periods..
                         
                         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"INPUT ERROR"
                                                                         message:@"Please do not use two periods!"
@@ -127,7 +124,7 @@
                     }
                 }
                 
-            } else if (batuhanic==1) {
+            } else if (batuhanic==1) { //If user starts with a period... Programs pops out an error window.
                 
                 batuhanic = 0;
                 
@@ -140,7 +137,7 @@
                 sonuc = 0;
                 numero = @"0";
                 
-            } else {
+            } else { //If user uses an integer, then yay! Everything is much simple...
                 
                 for (love=0; love<length; love++) {
                     if ([numero characterAtIndex:love]=='1') {
@@ -150,16 +147,17 @@
                     }
                 }
             }
-            
-            switch (segmentedcontrol2.selectedSegmentIndex) {
+            // So far we have scanned the binary number and found its value. Now, let's convert it!
+
+            switch (segmentedcontrol2.selectedSegmentIndex) { //This is the code referring to the bar at the bottom with base options (binary, octal, decimal, hexadec).
                     
-                case 0:
+                case 0: //If user wants to convert from binary to binary, program outputs the input.
                     
                     label.text = [NSString stringWithFormat:@"%@", numero];
                     
                     break;
                     
-                case 2:
+                case 2: //If user wants to convert from binary to octal...
                     
                     if (batuhanic>1) {
                         label.text = [NSString stringWithFormat:@"%.3f", sonuc];
@@ -169,13 +167,13 @@
                     
                     break;
                     
-                case 1:
+                case 1: //If user wants to convert from binary to decimal.
                     
                     label.text = [NSString stringWithFormat:@"%o", (int)sonuc];
                     
                     break;
                     
-                case 3:
+                case 3: //If user wants to convert from binary to hexadecimal...
                     
                     label.text = [NSString stringWithFormat:@"%x", (int)sonuc];
                     
@@ -187,54 +185,55 @@
             
             break;
         }
-        case 2: //DEC'DEN......
+        case 2: //If user wants to convert FROM BINARY
             
-            sonuc = [textField.text floatValue];
+            sonuc = [textField.text floatValue]; //Program scans the number
             
             float floater;
-            number = (int)sonuc;
-            floater = sonuc - number;
+            number = (int)sonuc; //the integer fragment of the number
+            floater = sonuc - number;//the non-integer fragment of the number
             
             
             switch (segmentedcontrol2.selectedSegmentIndex) {
                     
-                case 0: //BIN'E......
+                case 0: //If user wants to convert from decimal to binary
                     
                 {
-                    
-                   //if(sonuc > 999999999) { number = 0; } /////////ben seyettim bunu
+                   
                    
                     if (sonuc!=0) {
                         static int a;
                         
-                        a = log2(number);
+                        a = log2(number); //We are taking the logarythm of the number on base 2, in order to find the maximum number of digits.
                         
                         
                         int i, y, x;
                         
-                        char output[1024];
+                        char output[1024]; // The output string.
+
                         
                         
                         output[a+1] = '\0';
                         
                         for(i=a; i>=0; i--)
-                        {
+                        { // Now, to calculate the number's value in binary, we are continuously dividing the number into 2.
                             x = number/pow(2, i);
                             if (x < 1) {
-                                output[a-i] = '0';
+                                output[a-i] = '0'; //If number is larger than 2 to the power of i, we assign "0" to that respective digit.
                             } else {
-                                output[a-i] = '1';
+                                output[a-i] = '1'; // Otherwise, we assign 1 to that respective digit. And we go on until the remainder is 0. How do we find the remainder? BELOW!
                                 y = pow(2, i);
-                                number %= y;
+                                number %= y; //find the remainder!
                             }
                         }
                         
-                        if (floater > 0) {
+                        if (floater > 0) { //If the user input a non-integer value, we do something similar.
+
                             
                             output[a+1] = '.';
                             int tugrul = 0;
                             
-                            for (tugrul=minus; floater>0; tugrul--) {
+                            for (tugrul=minus; floater>0; tugrul--) { //minus equals minus 1 (-1). It will divide the number by 2 to the power -1 initially.
                                 if (floater < pow(2, tugrul)) {
                                     output[a+1-tugrul] = '0';
                                 } else {
@@ -246,7 +245,7 @@
                             output[a+1-tugrul] = '\0';
                         }
                         
-                        label.text = [NSString stringWithFormat:@"%s", output];
+                        label.text = [NSString stringWithFormat:@"%s", output]; //Victory! Program now writes the result. The remaining has the same logic.
                     } else {
                         label.text = [NSString stringWithFormat:@"%d", 0];
                     }
@@ -350,20 +349,6 @@
             if ([hex length] == 0) {
                hexAsInt = 0;
             }
-            
-            
-            
-            /*if ([hex characterAtIndex:hexAsInt]!='1' && [hex characterAtIndex:hexAsInt]!='0' && [hex characterAtIndex:hexAsInt]!= '2' && [hex characterAtIndex:hexAsInt]!='3' && [hex characterAtIndex:hexAsInt]!= '4' && [hex characterAtIndex:hexAsInt]!='5' && [hex characterAtIndex:hexAsInt]!='6' && [hex characterAtIndex:hexAsInt]!='7' && [hex characterAtIndex:hexAsInt]!='8' && [hex characterAtIndex:hexAsInt]!='9' && [hex characterAtIndex:hexAsInt]!='a' && [hex characterAtIndex:hexAsInt]!='b' && [hex characterAtIndex:hexAsInt]!='c' && [hex characterAtIndex:hexAsInt]!='d' && [hex characterAtIndex:hexAsInt]!='e' && [hex characterAtIndex:hexAsInt]!='f')
-            
-                {UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"INPUT ERROR"
-                                                                                                                                                                                                                                                                                                                                                                                                                                      message:@"Please use appropriate digits!"
-                                                                                                                                                                                                                                                                                                                                                                                                                                     delegate:nil
-                                                                                                                                                                                                                                                                                                                                                                                                                            cancelButtonTitle:@"GOT IT!"
-                                                                                                                                                                                                                                                                                                                                                                                                                            otherButtonTitles:nil];
-                [alert show];}
-                
-             */
-            
             switch (segmentedcontrol2.selectedSegmentIndex) {
                 case 0:
                 {
@@ -424,7 +409,7 @@
             break;
     }
     
-    number=0; love=0; b=0; batuhanic=0; sonuc=0;
+    number=0; love=0; b=0; batuhanic=0; sonuc=0; //And now program clears all the variables.
 }
 
 
